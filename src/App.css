@@ -1,0 +1,469 @@
+/* ── Layout ────────────────────────────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  padding: 0 16px;
+  background: #111128;
+  border-bottom: 1px solid #2a2a4a;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-brand {
+  background: #e6b800;
+  color: #000;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+}
+
+.header-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ffffff;
+}
+
+.header-center {
+  flex: 1;
+  text-align: center;
+}
+
+.header-description {
+  font-size: 13px;
+  color: #aaaacc;
+  font-style: italic;
+}
+
+.header-right {
+  font-size: 12px;
+  color: #888;
+}
+
+.header-mode {
+  padding: 3px 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* ── Main area (sidebar + canvas) ─────────────────────────────────────── */
+.main-area {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+.sidebar {
+  width: 140px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  background: #131330;
+  border-right: 1px solid #2a2a4a;
+  overflow-y: auto;
+}
+
+.sidebar-btn {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  color: #cfd8dc;
+  background: #1b1b3a;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.sidebar-btn:hover:not(:disabled) {
+  background: #26265a;
+  border-color: #4a4a8a;
+}
+
+.sidebar-btn:active:not(:disabled) {
+  background: #333370;
+}
+
+.sidebar-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Canvas container ─────────────────────────────────────────────────── */
+.canvas-container {
+  flex: 1;
+  position: relative;
+  background: #1a1a2e;
+  overflow: hidden;
+}
+
+.canvas-container canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* ── Control bar ──────────────────────────────────────────────────────── */
+.control-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 16px;
+  background: #111128;
+  border-top: 1px solid #2a2a4a;
+  flex-shrink: 0;
+}
+
+.control-speed {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.control-speed select {
+  background: #1b1b3a;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.control-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.control-buttons button {
+  background: #1b1b3a;
+  border: 1px solid #444;
+  color: #e0e0e0;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  line-height: 1;
+}
+
+.control-buttons button:hover:not(:disabled) {
+  background: #26265a;
+}
+
+.control-buttons button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.control-play {
+  padding: 4px 16px !important;
+  font-size: 18px !important;
+}
+
+.control-progress {
+  font-size: 13px;
+  color: #888;
+  min-width: 120px;
+  text-align: right;
+}
+
+/* ── Modal ─────────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: #1e1e3f;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 280px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #ffffff;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 15px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background: #0f0f23;
+  color: #e0e0e0;
+  outline: none;
+  margin-bottom: 16px;
+}
+
+.modal-input:focus {
+  border-color: #6c6cff;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-btn {
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.modal-btn-cancel {
+  background: transparent;
+  color: #aaa;
+  border-color: #555;
+}
+
+.modal-btn-cancel:hover {
+  background: #2a2a4a;
+}
+
+.modal-btn-ok {
+  background: #4a4aff;
+  color: #fff;
+  border-color: #4a4aff;
+}
+
+.modal-btn-ok:hover {
+  background: #5a5aff;
+}
+
+/* ── Algorithm panel (right side) ─────────────────────────────────────── */
+.algo-panel {
+  position: relative;
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #131330;
+  border-left: 1px solid #2a2a4a;
+  overflow: hidden;
+  transition: width 0.2s ease;
+}
+
+.algo-panel--collapsed {
+  width: 28px;
+}
+
+.algo-panel-toggle {
+  position: absolute;
+  top: 8px;
+  left: 4px;
+  z-index: 2;
+  width: 20px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1b1b3a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #ccc;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.algo-panel-toggle:hover {
+  background: #26265a;
+}
+
+.algo-panel-content {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 8px 8px 30px;
+  overflow-y: auto;
+  height: 100%;
+  gap: 8px;
+}
+
+/* Header */
+.algo-panel-header {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  padding: 8px 10px;
+  background: #1b1b3a;
+  border-radius: 4px;
+  text-align: right;
+}
+
+/* Status banner */
+.algo-panel-status {
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: #e6b800;
+  color: #000;
+  font-weight: 500;
+}
+
+.algo-panel-status--success {
+  background: #43a047;
+  color: #fff;
+}
+
+.algo-panel-status--error {
+  background: #e53935;
+  color: #fff;
+}
+
+/* Pseudocode block */
+.algo-panel-code {
+  background: #e6b800;
+  border-radius: 4px;
+  padding: 4px 0;
+  overflow: hidden;
+}
+
+.algo-code-line {
+  padding: 3px 10px;
+  transition: background 0.15s;
+}
+
+.algo-code-line pre {
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  color: #1a1a1a;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.algo-code-line--active {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.algo-code-line--active pre {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Step log accordion */
+.algo-panel-log {
+  margin-top: 4px;
+}
+
+.algo-panel-log-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ccc;
+  cursor: pointer;
+  padding: 6px 10px;
+  background: #1b1b3a;
+  border-radius: 4px;
+  user-select: none;
+  list-style: none;
+}
+
+.algo-panel-log-header::-webkit-details-marker {
+  display: none;
+}
+
+.algo-panel-log-header::before {
+  content: '▸ ';
+  font-size: 11px;
+}
+
+.algo-panel-log[open] > .algo-panel-log-header::before {
+  content: '▾ ';
+}
+
+.algo-panel-log-list {
+  max-height: 240px;
+  overflow-y: auto;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.algo-log-entry {
+  display: flex;
+  gap: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  color: #bbb;
+  background: #16163a;
+  border-radius: 2px;
+}
+
+.algo-log-idx {
+  color: #888;
+  min-width: 22px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.algo-log-desc {
+  word-break: break-word;
+}
+
+/* Empty state */
+.algo-panel-empty {
+  padding: 24px 10px;
+  text-align: center;
+  color: #666;
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* ── Hide number input spinners ───────────────────────────────────────── */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
