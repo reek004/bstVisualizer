@@ -67,6 +67,31 @@ function drawNode(
   ctx.fillText(String(value), x, y);
 }
 
+// ── Draw active-node arrow indicator ────────────────────────────────────────
+
+const ARROW_GAP = 6;       // space between node circle and arrow tip
+const ARROW_HEIGHT = 14;
+const ARROW_HALF_WIDTH = 7;
+
+function drawActiveArrow(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  color: string,
+) {
+  const tipY = y + NODE_RADIUS + ARROW_GAP;
+  const baseY = tipY + ARROW_HEIGHT;
+
+  ctx.beginPath();
+  ctx.moveTo(x, tipY);                        // tip (pointing down)
+  ctx.lineTo(x - ARROW_HALF_WIDTH, baseY);    // bottom-left
+  ctx.lineTo(x + ARROW_HALF_WIDTH, baseY);    // bottom-right
+  ctx.closePath();
+
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
 // ── Main render function ───────────────────────────────────────────────────
 
 export function renderTree(
@@ -77,6 +102,7 @@ export function renderTree(
   highlightNodes: Map<number, HighlightType>,
   highlightEdges: Array<[number, number]>,
   meta: { nodeCount: number; treeHeight: number },
+  activeNode?: number,
 ) {
   // Clear canvas
   ctx.fillStyle = BG_COLOR;
@@ -106,6 +132,16 @@ export function renderTree(
 
   // Second pass: draw nodes (on top of edges)
   drawNodes(ctx, root, highlightNodes);
+
+  // Third pass: draw active-node arrow indicator
+  if (activeNode !== undefined) {
+    const pos = findNodePosition(root, activeNode);
+    if (pos) {
+      const hl = highlightNodes.get(activeNode);
+      const arrowColor = hl ? COLORS[hl] : '#ffffff';
+      drawActiveArrow(ctx, pos.x, pos.y, arrowColor);
+    }
+  }
 }
 
 // ── Recursive edge drawing ─────────────────────────────────────────────────
@@ -125,6 +161,17 @@ function drawEdges(
     drawEdge(ctx, node.x, node.y, node.right.x, node.right.y, edgeSet.has(key));
     drawEdges(ctx, node.right, edgeSet);
   }
+}
+
+// ── Find node position by value ─────────────────────────────────────────────
+
+function findNodePosition(
+  node: PositionedNode | null,
+  value: number,
+): { x: number; y: number } | null {
+  if (!node) return null;
+  if (node.value === value) return { x: node.x, y: node.y };
+  return findNodePosition(node.left, value) ?? findNodePosition(node.right, value);
 }
 
 // ── Recursive node drawing ─────────────────────────────────────────────────

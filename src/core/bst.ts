@@ -42,6 +42,7 @@ function makeStep(
   highlights: Array<[number, HighlightType]> = [],
   edges: Array<[number, number]> = [],
   codeLine?: number,
+  activeNode?: number,
 ): AnimationStep {
   return {
     tree: cloneTree(tree),
@@ -49,6 +50,7 @@ function makeStep(
     highlightNodes: new Map(highlights),
     highlightEdges: [...edges],
     codeLine,
+    activeNode,
   };
 }
 
@@ -267,6 +269,7 @@ function makeTraversalStep(
     highlightNodes: highlights,
     highlightEdges: [...visitedEdges],
     codeLine,
+    activeNode: currentNode,
   };
 }
 

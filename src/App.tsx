@@ -23,6 +23,7 @@ import './App.css';
 
 // Operations that require a numeric input
 const INPUT_OPS: OperationType[] = [
+  'create',
   'search',
   'insert',
   'remove',
@@ -38,6 +39,7 @@ function App() {
   // ── Animation / highlight state ──────────────────────────────────────────
   const [highlightNodes, setHighlightNodes] = useState<Map<number, HighlightType>>(new Map());
   const [highlightEdges, setHighlightEdges] = useState<Array<[number, number]>>([]);
+  const [activeNodeValue, setActiveNodeValue] = useState<number | undefined>(undefined);
   const [description, setDescription] = useState('Default BST loaded (N=21, h=7). Pick an operation.');
 
   // ── Playback state ───────────────────────────────────────────────────────
@@ -58,7 +60,7 @@ function App() {
   const [modalOp, setModalOp] = useState<OperationType | null>(null);
 
   // ── Canvas hook ──────────────────────────────────────────────────────────
-  const { canvasRef } = useCanvas({ tree, highlightNodes, highlightEdges });
+  const { canvasRef } = useCanvas({ tree, highlightNodes, highlightEdges, activeNode: activeNodeValue });
 
   // ── Cleanup playback on unmount ──────────────────────────────────────────
   useEffect(() => {
@@ -72,6 +74,7 @@ function App() {
       playbackRef.current?.destroy();
       setHighlightNodes(new Map());
       setHighlightEdges([]);
+      setActiveNodeValue(undefined);
 
       // Set the active operation for the algorithm panel
       setActiveOperation({ op, value: opValue });
@@ -94,6 +97,7 @@ function App() {
         onStep: (step) => {
           setHighlightNodes(step.highlightNodes);
           setHighlightEdges(step.highlightEdges);
+          setActiveNodeValue(step.activeNode);
           setDescription(step.description);
           setActiveLine(step.codeLine);
           if (step.tree) setTree(step.tree);
@@ -109,6 +113,7 @@ function App() {
           setAnimating(false);
           setTree(finalTree);
           // Keep highlights visible — they are cleared when the next operation starts
+          setActiveNodeValue(undefined); // hide arrow when done
           setCurrentStep(pb.getTotal());
           setActiveLine(undefined);
         },
@@ -131,12 +136,6 @@ function App() {
       }
 
       switch (op) {
-        case 'create': {
-          const size = Math.floor(Math.random() * 6) + 5; // 5-10 nodes
-          const { root, steps } = createRandomTree(size);
-          runAnimation(steps, root, 'create');
-          break;
-        }
         case 'inorder':
           runAnimation(inorderTraversal(tree), tree, 'inorder');
           break;
@@ -157,6 +156,11 @@ function App() {
       setModalOp(null);
 
       switch (modalOp) {
+        case 'create': {
+          const { root, steps } = createRandomTree(value);
+          runAnimation(steps, root, 'create', value);
+          break;
+        }
         case 'search': {
           const { steps } = searchNode(tree, value);
           runAnimation(steps, tree, 'search', value);
@@ -270,8 +274,8 @@ function App() {
 
       {modalOp && (
         <InputModal
-          title={modalOp === 'selectKth' ? 'Select k-th smallest' : `${modalOp}(v)`}
-          placeholder={modalOp === 'selectKth' ? 'Enter k…' : 'Enter value…'}
+          title={modalOp === 'create' ? 'Create Random BST' : modalOp === 'selectKth' ? 'Select k-th smallest' : `${modalOp}(v)`}
+          placeholder={modalOp === 'create' ? 'Number of nodes…' : modalOp === 'selectKth' ? 'Enter k…' : 'Enter value…'}
           onSubmit={handleModalSubmit}
           onCancel={() => setModalOp(null)}
         />

@@ -8,6 +8,7 @@ interface UseCanvasOptions {
   tree: TreeNode | null;
   highlightNodes: Map<number, HighlightType>;
   highlightEdges: Array<[number, number]>;
+  activeNode?: number;
 }
 
 /**
@@ -16,7 +17,7 @@ interface UseCanvasOptions {
  * Returns a ref to attach to a <canvas> element and a `redraw` function
  * that can be called imperatively (e.g. on window resize).
  */
-export function useCanvas({ tree, highlightNodes, highlightEdges }: UseCanvasOptions) {
+export function useCanvas({ tree, highlightNodes, highlightEdges, activeNode }: UseCanvasOptions) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafId = useRef<number>(0);
 
@@ -47,8 +48,8 @@ export function useCanvas({ tree, highlightNodes, highlightEdges }: UseCanvasOpt
       treeHeight: treeHeight(tree),
     };
 
-    renderTree(ctx, positioned, w, h, highlightNodes, highlightEdges, meta);
-  }, [tree, highlightNodes, highlightEdges]);
+    renderTree(ctx, positioned, w, h, highlightNodes, highlightEdges, meta, activeNode);
+  }, [tree, highlightNodes, highlightEdges, activeNode]);
 
   // Redraw whenever inputs change
   useEffect(() => {

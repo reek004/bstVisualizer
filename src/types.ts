@@ -33,6 +33,8 @@ export interface AnimationStep {
   description: string;
   /** Index of the active pseudocode line (0-based) for the algorithm panel */
   codeLine?: number;
+  /** The node value currently being examined (arrow indicator) */
+  activeNode?: number;
 }
 
 // ── Operation types exposed by the sidebar ─────────────────────────────────
